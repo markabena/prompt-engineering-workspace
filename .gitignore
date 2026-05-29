@@ -1,0 +1,18 @@
+# Python
+__pycache__/
+*.py[cod]
+.env
+venv/
+
+# Node
+node_modules/
+
+# Editor
+.vscode/
+.DS_Store
+
+# Additional ignores (added per user request)
+results/
+logs/
+.promptfoo/
+*.pyc
