@@ -29,7 +29,7 @@ Every new entry also gets a row in `prompt-library/README.md`.
 Every written evaluation has: 1) rating upfront (e.g. 2/5), 2) named failure types, 3) quoted evidence from the output, 4) root cause traced to the original prompt, 5) fix direction.
 
 ## Hard rules — public repo
-- NEVER commit Handshake AI / Outlier / Mercor task content: real prompts, images, rubrics, QC feedback, project names' internal details (Lizard, BabyVision, Seal, Parchment, Buckeye, Octahedron etc.). They are under NDA. Practice exercises only.
+- NEVER commit annotation-platform task content: real prompts, images, rubrics, QC feedback, guideline wording, or internal project names/codenames. They are under NDA. Practice exercises only. The list of codenames to screen for lives in a local, untracked file, never in this repo: see CLAUDE.local.md (gitignored).
 - NEVER commit `.env`, API keys, tokens, student ID, CGPA, or client data from the advisory/KDP businesses.
 - Before every commit, run `git status` and `git diff --cached --stat` and check nothing above is staged.
 
