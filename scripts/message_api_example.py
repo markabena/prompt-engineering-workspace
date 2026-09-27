@@ -2,6 +2,8 @@ import os
 from dotenv import load_dotenv
 import anthropic
 
+from config import DEFAULT_MODEL
+
 
 def main():
     load_dotenv()
@@ -14,7 +16,7 @@ def main():
 
     # Test call using the messages API
     resp = client.messages.create(
-        model="claude-sonnet-4-20250514",
+        model=DEFAULT_MODEL,
         max_tokens=256,
         messages=[
             {"role": "user", "content": "Say 'API connection successful' and nothing else."}

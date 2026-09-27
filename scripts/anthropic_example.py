@@ -2,6 +2,8 @@ from dotenv import load_dotenv
 import os
 import anthropic
 
+from config import DEFAULT_MODEL
+
 
 def main():
     load_dotenv()
@@ -12,8 +14,9 @@ def main():
 
     client = anthropic.Anthropic(api_key=api_key)
 
+    system_prompt = "You are a helpful assistant."
+
     messages = [
-        {"role": "system", "content": "You are a helpful assistant."},
         {
             "role": "user",
             "content": "Write a short, friendly greeting and summarize what this prompt engineering workspace is for.",
@@ -21,7 +24,8 @@ def main():
     ]
 
     response = client.messages.create(
-        model="claude-3.5-mini",
+        model=DEFAULT_MODEL,
+        system=system_prompt,
         messages=messages,
         max_tokens=200,
         temperature=0.7,

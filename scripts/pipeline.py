@@ -4,6 +4,8 @@ import anthropic
 from dotenv import load_dotenv
 from datetime import datetime
 
+from config import DEFAULT_MODEL
+
 load_dotenv()
 
 client = anthropic.Anthropic(api_key=os.getenv("ANTHROPIC_API_KEY"))
@@ -13,7 +15,7 @@ def load_prompt(filepath: str) -> str:
     with open(filepath, "r", encoding="utf-8") as f:
         return f.read().strip()
 
-def run_prompt(system_prompt: str, user_message: str, model: str = "claude-sonnet-4-20250514", max_tokens: int = 1024) -> dict:
+def run_prompt(system_prompt: str, user_message: str, model: str = DEFAULT_MODEL, max_tokens: int = 1024) -> dict:
     """Send a prompt to Claude and return structured output."""
     response = client.messages.create(
         model=model,
