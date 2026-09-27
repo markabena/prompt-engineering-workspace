@@ -2,6 +2,7 @@
 
 Public GitHub portfolio + working lab for Mark Abena's prompt engineering and AI evaluation track.
 Remote: https://github.com/markabena/prompt-engineering-workspace — default branch `main`.
+Mirror: https://github.com/markabena/AI-Evaluation-Portfolio — `origin` has both as push URLs, so `git push` updates both. Fetch/pull comes from prompt-engineering-workspace only; never edit the mirror directly on GitHub.
 
 ## Who this is for
 Mark: B.Eng Aerospace Engineering (AFIT Kaduna, 2026). Targets higher-tier AI evaluation work on Mercor, Outlier AI and Handshake AI.
