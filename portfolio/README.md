@@ -2,6 +2,10 @@
 
 Work outside prompt engineering: aerospace engineering projects and the Claude skills / MCP track.
 
+## AI training & evaluation
+
+Paid annotation and evaluation work across nine task types: adversarial visual QA, preference ranking, rubric authoring, agent evaluation and more. See [ai-training-experience.md](ai-training-experience.md).
+
 ## Engineering
 
 | Project | Type | Tools | Summary |
