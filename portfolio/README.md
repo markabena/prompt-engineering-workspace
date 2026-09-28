@@ -6,6 +6,8 @@ Work outside prompt engineering: aerospace engineering projects and the Claude s
 
 Paid annotation and evaluation work across nine task types: adversarial visual QA, preference ranking, rubric authoring, agent evaluation and more. See [ai-training-experience.md](ai-training-experience.md).
 
+Methods write-ups and worked examples live in the companion repo: [AI-Evaluation-Portfolio](https://github.com/markabena/AI-Evaluation-Portfolio).
+
 ## Engineering
 
 | Project | Type | Tools | Summary |

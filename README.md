@@ -20,6 +20,10 @@ This repo is both my working lab (scripts, prompt templates, evals) and my publi
 | [`notebooks/`](notebooks/) | Experiments |
 | [`docs/`](docs/) | Prompt changelogs and design notes |
 
+## Related repo
+
+**[AI-Evaluation-Portfolio](https://github.com/markabena/AI-Evaluation-Portfolio)**: my evaluation methods written up with original worked examples (adversarial prompt design, rubric authoring, pairwise preference evaluation, multi-hop research prompts) plus a CV to platform-matching prompt chain.
+
 ## Evaluation standard
 
 Every written evaluation in this repo has five elements:
