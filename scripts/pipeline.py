@@ -8,7 +8,11 @@ from config import DEFAULT_MODEL
 
 load_dotenv()
 
-client = anthropic.Anthropic(api_key=os.getenv("ANTHROPIC_API_KEY"))
+api_key = os.getenv("ANTHROPIC_API_KEY")
+if not api_key:
+    raise SystemExit("ANTHROPIC_API_KEY is missing. Add it to the .env file in the repo root.")
+
+client = anthropic.Anthropic(api_key=api_key)
 
 def load_prompt(filepath: str) -> str:
     """Load a prompt template from file."""
@@ -17,14 +21,28 @@ def load_prompt(filepath: str) -> str:
 
 def run_prompt(system_prompt: str, user_message: str, model: str = DEFAULT_MODEL, max_tokens: int = 1024) -> dict:
     """Send a prompt to Claude and return structured output."""
-    response = client.messages.create(
-        model=model,
-        max_tokens=max_tokens,
-        system=system_prompt,
-        messages=[
-            {"role": "user", "content": user_message}
-        ]
-    )
+    try:
+        response = client.messages.create(
+            model=model,
+            max_tokens=max_tokens,
+            system=system_prompt,
+            messages=[{"role": "user", "content": user_message}],
+        )
+    except anthropic.AuthenticationError:
+        print("ERROR 401: API key rejected. Check ANTHROPIC_API_KEY in .env.")
+        return None
+    except anthropic.NotFoundError:
+        print(f"ERROR 404: Model '{model}' not found or retired. Update DEFAULT_MODEL in config.py.")
+        return None
+    except anthropic.RateLimitError:
+        print("ERROR 429: Rate limit hit. Wait a moment and try again.")
+        return None
+    except anthropic.APIConnectionError:
+        print("ERROR: Could not reach the API. Check your internet connection.")
+        return None
+    except anthropic.APIStatusError as e:
+        print(f"ERROR {e.status_code}: {e.message}")
+        return None
 
     return {
         "model": model,
@@ -33,7 +51,7 @@ def run_prompt(system_prompt: str, user_message: str, model: str = DEFAULT_MODEL
         "response": response.content[0].text,
         "input_tokens": response.usage.input_tokens,
         "output_tokens": response.usage.output_tokens,
-        "timestamp": datetime.utcnow().isoformat()
+        "timestamp": datetime.utcnow().isoformat(),
     }
 
 def save_result(result: dict, output_dir: str = "results") -> str:
@@ -60,6 +78,8 @@ if __name__ == "__main__":
 
     print("Running pipeline...\n")
     result = run_prompt(system, user)
+    if result is None:
+        raise SystemExit(1)
 
     print(f"Response:\n{result['response']}")
     print(f"\nTokens used: {result['input_tokens']} in / {result['output_tokens']} out")
