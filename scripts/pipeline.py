@@ -1,5 +1,7 @@
 import os
 import json
+import random
+import time
 import anthropic
 from dotenv import load_dotenv
 from datetime import datetime, timezone
@@ -12,17 +14,36 @@ api_key = os.getenv("ANTHROPIC_API_KEY")
 if not api_key:
     raise SystemExit("ANTHROPIC_API_KEY is missing. Add it to the .env file in the repo root.")
 
-client = anthropic.Anthropic(api_key=api_key)
+client = anthropic.Anthropic(api_key=api_key, max_retries=0)
 
 def load_prompt(filepath: str) -> str:
     """Load a prompt template from file."""
     with open(filepath, "r", encoding="utf-8") as f:
         return f.read().strip()
 
+
+# Errors worth retrying: the request is fine, the conditions are bad
+TEMPORARY_ERRORS = (anthropic.RateLimitError, anthropic.APIConnectionError, anthropic.InternalServerError)
+
+
+def create_with_retry(max_attempts=3, **kwargs):
+    """Call the API, retrying temporary errors with exponential backoff."""
+    for attempt in range(1, max_attempts + 1):
+        try:
+            return client.messages.create(**kwargs)
+        except TEMPORARY_ERRORS as e:
+            if attempt == max_attempts:
+                raise  # out of attempts: pass the error up to run_prompt
+            # Exponential backoff (1s, 2s, 4s ...) plus random jitter (0-1s) so many
+            # clients failing at the same moment don't all retry at the same moment
+            wait = 2 ** (attempt - 1) + random.uniform(0, 1)
+            print(f"Attempt {attempt} failed ({type(e).__name__}). Retrying in {wait:.1f}s...")
+            time.sleep(wait)
+
 def run_prompt(system_prompt: str, user_message: str, model: str = DEFAULT_MODEL, max_tokens: int = 1024) -> dict:
     """Send a prompt to Claude and return structured output."""
     try:
-        response = client.messages.create(
+        response = create_with_retry(
             model=model,
             max_tokens=max_tokens,
             system=system_prompt,

@@ -23,3 +23,4 @@ All prompts here are personal practice exercises. No client or platform task con
 | 008 | [Few-shot KDP classifier](entries/008-few-shot-kdp-classifier.md) ⚠️ output not recorded | Few-shot classification | Classify blurbs into KDP niches | ChatGPT (planned) | 2026-07 |
 | 009 | [Truncation detection via stop_reason](entries/009-stop-reason-truncation.md) | Response inspection (stop_reason) | Catch cut-off outputs in a pipeline | claude-haiku-4-5-20251001 | 2026-10-04 |
 | 010 | [Typed API error handling](entries/010-api-error-handling.md) | SDK exception handling | Fail cleanly with one actionable message | claude-haiku-4-5-20251001 | 2026-10-06 |
+| 011 | [Retries with backoff and jitter](entries/011-retry-backoff-jitter.md) | Exponential backoff + jitter | Survive transient API failures | claude-haiku-4-5-20251001 | 2026-10-06 |
