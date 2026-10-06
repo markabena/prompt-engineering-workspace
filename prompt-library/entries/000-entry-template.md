@@ -31,4 +31,4 @@
 <!-- YYYY-MM-DD -->
 
 ## Model used
-<!-- Exact model ID, e.g. claude-sonnet-4-20250514, plus temperature / max_tokens if non-default. -->
+<!-- Exact model ID, e.g. claude-haiku-4-5-20251001, plus temperature / max_tokens if non-default. -->

@@ -2,7 +2,7 @@ import os
 import json
 import anthropic
 from dotenv import load_dotenv
-from datetime import datetime
+from datetime import datetime, timezone
 
 from config import DEFAULT_MODEL
 
@@ -44,14 +44,22 @@ def run_prompt(system_prompt: str, user_message: str, model: str = DEFAULT_MODEL
         print(f"ERROR {e.status_code}: {e.message}")
         return None
 
+    # Collect the text from EVERY text block, not just the first one
+    text = "".join(block.text for block in response.content if block.type == "text")
+
+    # Read the delivery note: was the answer cut off?
+    if response.stop_reason == "max_tokens":
+        print(f"WARNING: response hit the {max_tokens}-token limit and is incomplete.")
+
     return {
         "model": model,
         "system_prompt_preview": system_prompt[:80] + "...",
         "user_message": user_message,
-        "response": response.content[0].text,
+        "response": text,
+        "stop_reason": response.stop_reason,
         "input_tokens": response.usage.input_tokens,
         "output_tokens": response.usage.output_tokens,
-        "timestamp": datetime.utcnow().isoformat(),
+        "timestamp": datetime.now(timezone.utc).isoformat(),
     }
 
 def save_result(result: dict, output_dir: str = "results") -> str:
